@@ -161,6 +161,7 @@ services:
     image: stefanprodan/swarmprom-prometheus:v2.2.0-rc.0
     networks:
       - net
+      - backend
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
