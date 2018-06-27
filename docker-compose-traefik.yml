@@ -21,7 +21,7 @@ configs:
   task_rules:
     file: ./prometheus/rules/swarm_task.rules.yml
   prometheus_datasource:
-    file: ./grafana/datasource/prometheus.yml
+    file: ./grafana/datasources/prometheus.yaml
 
 services:
   dockerd-exporter:
