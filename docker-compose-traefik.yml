@@ -80,6 +80,7 @@ services:
       - grafana:/var/lib/grafana
     deploy:
       labels:
+        - traefik.docker.network=backend
         - traefik.backend={{ .Stack.Name }}_grafana
         - traefik.port=3000
         - traefik.frontend.rule=Host:${HOST};PathPrefixStrip:/grafana
@@ -178,6 +179,7 @@ services:
         target: /etc/prometheus/swarm_task.rules.yml
     deploy:
       labels:
+        - traefik.docker.network=backend
         - traefik.backend={{ .Stack.Name }}_prometheus
         - traefik.port=9090
         - traefik.frontend.rule=Host:${HOST};PathPrefixStrip:/prom
