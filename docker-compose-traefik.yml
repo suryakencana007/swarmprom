@@ -6,7 +6,7 @@ networks:
     attachable: true
   traefik:
     external:
-      name: backend
+      name: proxy
 
 volumes:
     prometheus: {}
