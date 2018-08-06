@@ -8,6 +8,6 @@ datasources:
   type: prometheus
   access: proxy
   url: http://prometheus:9090/prom
-  isDefault: false
+  isDefault: true
   version: 1
   editable: true

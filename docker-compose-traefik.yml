@@ -82,7 +82,7 @@ services:
       - grafana:/var/lib/grafana
     configs:
       - source: prometheus_datasource
-        target: /etc/grafana/provisioning/datasources/prometheus.yml
+        target: /etc/grafana/provisioning/datasources/prometheus.yaml
     deploy:
       labels:
         - traefik.docker.network=proxy

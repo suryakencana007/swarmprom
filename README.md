@@ -7,6 +7,29 @@ Swarmprom is a starter kit for Docker Swarm monitoring with [Prometheus](https:/
 [Alert Manager](https://github.com/prometheus/alertmanager)
 and [Unsee](https://github.com/cloudflare/unsee).
 
+## preparation
+
+### traefik
+
+```bash
+export HOST=localhost
+
+docker network create -d overlay proxy
+
+docker service create -d --name traefik \
+  --constraint=node.role==manager \
+  -p 8080:80 -p 8081:8080 \
+  --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+  --network proxy \
+  traefik \
+  --docker \
+  --docker.swarmmode \
+  --docker.domain=${HOST} \
+  --docker.watch \
+  --api
+
+```
+
 ## Install
 
 Clone this repository and run the monitoring stack:
@@ -20,7 +43,7 @@ ADMIN_PASSWORD=admin \
 SLACK_URL=https://hooks.slack.com/services/TOKEN \
 SLACK_CHANNEL=devops-alerts \
 SLACK_USER=alertmanager \
-docker stack deploy -c docker-compose.yml mon
+docker stack deploy -c docker-compose-traefik.yml mon
 ```
 
 Prerequisites:
