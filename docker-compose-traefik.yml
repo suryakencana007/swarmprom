@@ -5,8 +5,7 @@ networks:
     driver: overlay
     attachable: true
   proxy:
-    external:
-      name: proxy
+    external: true
 
 volumes:
     prometheus: {}
@@ -62,6 +61,8 @@ services:
 
   grafana:
     image: stefanprodan/swarmprom-grafana:5.0.1
+    ports:
+      - 3000
     networks:
       - net
       - proxy
@@ -85,10 +86,18 @@ services:
         target: /etc/grafana/provisioning/datasources/prometheus.yaml
     deploy:
       labels:
+        #### Labels define the behavior and rules of the traefik proxy for this container ####
+        #### Labels define the behavior and rules of the traefik proxy for this container ####
+        - traefik.enable=true # <== Enable traefik on itself to view dashboard and assign subdomain to view it
+        - traefik.tags=public
         - traefik.docker.network=proxy
-        - traefik.backend={{ .Stack.Name }}_grafana
-        - traefik.port=3000
-        - traefik.frontend.rule=Host:${HOST};PathPrefixStrip:/grafana
+        - traefik.http.routers.grafana-secured.entrypoints=web-secured
+        - traefik.http.routers.grafana-secured.rule=Host(`grafana.${HOST}`) # <== Setting the domain for the dashboard 
+        
+        - traefik.http.routers.grafana-secured.tls=true
+        - traefik.http.routers.grafana-secured.tls.certresolver=mytlschallenge
+                   
+        - traefik.http.services.grafana.loadbalancer.server.port=3000
       mode: replicated
       replicas: 1
       placement:
@@ -165,6 +174,8 @@ services:
 
   prometheus:
     image: stefanprodan/swarmprom-prometheus:v2.2.0-rc.0
+    ports:
+      - 9090
     networks:
       - net
       - proxy
@@ -184,10 +195,17 @@ services:
         target: /etc/prometheus/swarm_task.rules.yml
     deploy:
       labels:
+        #### Labels define the behavior and rules of the traefik proxy for this container ####
+        - traefik.enable=true # <== Enable traefik on itself to view dashboard and assign subdomain to view it
+        - traefik.tags=public
         - traefik.docker.network=proxy
-        - traefik.backend={{ .Stack.Name }}_prometheus
-        - traefik.port=9090
-        - traefik.frontend.rule=Host:${HOST};PathPrefix:/prom
+        - traefik.http.routers.prometheus-secured.entrypoints=web-secured
+        - traefik.http.routers.prometheus-secured.rule=Host(`prometheus.${HOST}`) # <== Setting the domain for the dashboard 
+        
+        - traefik.http.routers.prometheus-secured.tls=true
+        - traefik.http.routers.prometheus-secured.tls.certresolver=mytlschallenge
+                   
+        - traefik.http.services.prometheus.loadbalancer.server.port=9090
       mode: replicated
       replicas: 1
       placement:
