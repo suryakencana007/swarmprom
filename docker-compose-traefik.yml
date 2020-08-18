@@ -70,7 +70,7 @@ services:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_ROOT_URL=/grafana
+      - GF_SERVER_ROOT_URL=/
       - GF_SERVER_DOMAIN=${HOST}
       #- GF_SERVER_ROOT_URL=${GF_SERVER_ROOT_URL:-localhost}
       #- GF_SMTP_ENABLED=${GF_SMTP_ENABLED:-false}
@@ -186,7 +186,7 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=30d'
       - '--web.external-url=http://${HOST}/prom'
-    volumes:
+    volumes: 
       - prometheus:/prometheus
     configs:
       - source: node_rules
