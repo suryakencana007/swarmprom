@@ -92,7 +92,7 @@ services:
         - traefik.tags=public
         - traefik.docker.network=proxy
         - traefik.http.routers.grafana-secured.entrypoints=web-secured
-        - traefik.http.routers.grafana-secured.rule=Host(`grafana.${HOST}`) # <== Setting the domain for the dashboard 
+        - traefik.http.routers.grafana-secured.rule=Host(`grafana${STAGE}.${HOST}`) # <== Setting the domain for the dashboard 
         
         - traefik.http.routers.grafana-secured.tls=true
         - traefik.http.routers.grafana-secured.tls.certresolver=mytlschallenge
@@ -200,7 +200,7 @@ services:
         - traefik.tags=public
         - traefik.docker.network=proxy
         - traefik.http.routers.prometheus-secured.entrypoints=web-secured
-        - traefik.http.routers.prometheus-secured.rule=Host(`prometheus.${HOST}`) # <== Setting the domain for the dashboard 
+        - traefik.http.routers.prometheus-secured.rule=Host(`prometheus${STAGE}.${HOST}`) # <== Setting the domain for the dashboard 
         
         - traefik.http.routers.prometheus-secured.tls=true
         - traefik.http.routers.prometheus-secured.tls.certresolver=mytlschallenge
